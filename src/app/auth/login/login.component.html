@@ -1,0 +1,11 @@
+<div class="col-8">
+  <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email" formControlName="email" >
+    <print-form-error [control]="loginForm.controls.email"></print-form-error>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" formControlName="password">
+    <print-form-error [control]="loginForm.controls.password"></print-form-error>
+    <input type="submit">
+  </form>
+</div>
