@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const middleware =  require('./middlewares/middlewares');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const authRouter = require('./routes/authRoutes');
 const analysisRouter = require('./routes/analysisRoutes');
@@ -11,6 +12,7 @@ const {BadRequest} = require('./utils/handleErrors');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.json());
+app.use(cors())
 
 
 app.use('/auth', authRouter)
