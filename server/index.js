@@ -16,7 +16,7 @@ app.use(cors())
 
 
 app.use('/auth', authRouter)
-app.use('/analysis', analysisRouter);
+app.use('/analysis', middleware.authenticate, analysisRouter);
 
 // not found route
 app.use((req, res) => {

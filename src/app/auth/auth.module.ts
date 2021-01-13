@@ -4,8 +4,8 @@ import { LoginComponent } from './login/login.component';
 import {RouterModule} from '@angular/router';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import {authRoutes} from './auth.routing';
-import {SharedModule} from '../common/shared.module';
-import {PrintFormErrorComponent} from '../common/components/print-form-error/print-form-error.component';
+import {SharedModule} from '../shared/shared.module';
+import {PrintFormErrorComponent} from '../shared/components/print-form-error/print-form-error.component';
 
 
 

@@ -4,10 +4,7 @@ const handleAsync = require('./../utils/handleAsync');
 const User = require('./../models/UserModel');
 const {GeneralError, NotAuthenticated} = require('../utils/handleErrors');
 
-
-// TODO move refreshTokenArray to DB
-let refreshTokens = [];
-
+const refreshTokens = [];
 
 exports.signUp = handleAsync(async (req, res, next) => {
     const user = await User.findOne({
@@ -41,20 +38,18 @@ exports.signUp = handleAsync(async (req, res, next) => {
 
 exports.getToken = async (req, res) => {
     const refreshToken = req.body.token;
+
     if (!refreshTokens.includes(refreshToken)) throw new NotAuthenticated('Not Authenticated.');
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
         if (err) throw new NotAuthenticated('Not Authenticated.');
         const accessToken = generateAccessToken({name: user.name});
-        res.json({user: user});
+        res.json({accessToken});
     })
 }
 
-
-// TODO DO OGARNIĘCIA REFRESH TOKENY
 exports.login = handleAsync(async (req, res, next) => {
     const email = req.body.email;
-
     const user = await User.findOne({email: email});
 
     if (!user) {
@@ -73,19 +68,19 @@ exports.login = handleAsync(async (req, res, next) => {
         const accessToken = generateAccessToken(userInfo);
         const refreshToken = jwt.sign(userInfo, process.env.REFRESH_TOKEN_SECRET);
         refreshTokens.push(refreshToken)
+
         res.header("authorization", accessToken).json({
             accessToken: accessToken, refreshToken: refreshToken, user: userInfo
         })
-
     } else {
-        throw new GeneralError('User with this email not exists');
+        throw new GeneralError('Incorrect Password');
     }
 });
 
 // helper methods
 generateAccessToken = (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '10m',
+        expiresIn: '5m',
     })
 }
 

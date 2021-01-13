@@ -1,4 +1,4 @@
-export interface LoginResponse {
+export class LoginModel {
   accessToken: string;
   refreshToken: string;
   user: {

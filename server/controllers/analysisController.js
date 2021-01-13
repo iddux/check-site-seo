@@ -7,8 +7,7 @@ const {JSDOM} = jsdom;
 
 exports.makeAnalysis = handleAsync(async (req, res, next) => {
   try {
-
-    const site = await axios.get('https://mikcode.pl/asdasdasasdasdasdd');
+    const site = await axios.get(req.body.siteUrl);
     const data = site.data;
     const statusCode = site.request.res.statusCode;
     const isSSL = site.request.connection.authorized;
@@ -59,7 +58,7 @@ const calculateHeadingsCount = (document, result) => {
 }
 
 const calculateSiteRating = (document, result) => {
-
+  // TODO make site rating algoritm (based on previous search)
 }
 
 
