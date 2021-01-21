@@ -10,7 +10,7 @@ module.exports = {
         if(token == null) return res.sendStatus(401);
 
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-            if(err) throw new NotAuthenticated('Not authenticated.')
+            if(err) throw new NotAuthenticated('Not authenticated')
             req.user = user;
             next();
         })
@@ -41,6 +41,7 @@ module.exports = {
             Object.keys(params).forEach(param => {
                 if(req.body[param] === null || req.body[param] === undefined) {
                     isErrorHappened = true;
+
                     return res.status(500).json({
                         status: 'error',
                         message: `Missing Parameter`,
@@ -48,6 +49,7 @@ module.exports = {
                     })
                 } else if(typeof req.body[param] !== params[param]) {
                     isErrorHappened = true;
+
                     return res.status(500).json({
                         status: 'error',
                         message: 'Invalid type',

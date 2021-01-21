@@ -10,7 +10,7 @@ class GeneralError extends Error {
         }
 
         if (this instanceof NotAuthenticated) {
-            return 403;
+            return 401;
         }
 
         if (this instanceof NotFound) {

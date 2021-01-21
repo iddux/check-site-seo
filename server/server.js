@@ -1,6 +1,5 @@
 const app = require('./index.js');
 const http = require('http').createServer(app);
-const env = require('dotenv');
 const DBConnect = require('./config/DBConnect')
 
 DBConnect();

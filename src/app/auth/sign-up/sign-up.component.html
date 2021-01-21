@@ -1,1 +1,36 @@
-<p>sign-up works!</p>
+<div class="auth">
+  <div class="auth__inner">
+    <img class="auth__logo" src="../../../assets/images/logo.png"/>
+    <form class="auth__form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
+      <div class="auth__form-side">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input class="auth__input" type="text" id="username" name="username" formControlName="username">
+          <print-form-error [control]="signUpForm.controls.username"></print-form-error>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input class="auth__input" type="text" id="email" name="email" formControlName="email">
+          <print-form-error [control]="signUpForm.controls.email"></print-form-error>
+        </div>
+      </div>
+      <div class="auth__form-side">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input class="auth__input" type="password" id="password" name="password" formControlName="password">
+          <print-form-error [control]="signUpForm.controls.password"></print-form-error>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input class="auth__input" type="password" id="confirmPassword" name="confirmPassword"
+                 formControlName="confirmPassword">
+          <print-form-error [control]="signUpForm.controls.confirmPassword"></print-form-error>
+        </div>
+      </div>
+      <div class="auth__sign-up-bottom">
+        <input class="auth__submit" type="submit" value="Sign In">
+        <a routerLink="/auth/login" class="auth__link" href="#">Back to sign in</a>
+      </div>
+    </form>
+  </div>
+</div>

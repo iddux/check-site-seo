@@ -1,2 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap';
+@import 'variables';
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+
+}
+
+body {
+  font-size: 16px;
+  font-family: 'Oxygen', sans-serif;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+label {
+  margin-left: 20px;
+  font-size: 14px;
+  display: block;
+  color: $color-light;
+}
+
+input {
+  padding: 15px 20px;
+  outline: none !important;
+  border-radius: 40px;
+  border: 2px solid $color-primary;
+  font-size: 14px;
+  color: $color-light;
+
+  &:active, &:focus {
+    border: 2px solid $color-secondary;
+  }
+}
+
+a:hover {
+  text-decoration: none;
+}

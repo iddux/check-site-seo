@@ -13,6 +13,8 @@ export class ApiService {
   private apiUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
+  // TODO Handle API errors,
+
 
   analyze(siteUrl): Observable<any> {
     return this.http.post(`${this.apiUrl}/analysis`, {siteUrl});

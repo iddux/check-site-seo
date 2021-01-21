@@ -7,7 +7,6 @@ import {AbstractControl} from '@angular/forms';
   styleUrls: ['./print-form-error.component.scss']
 })
 export class PrintFormErrorComponent implements OnInit {
-
   @Input() control: AbstractControl;
 
   constructor() {
