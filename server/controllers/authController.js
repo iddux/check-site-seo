@@ -39,11 +39,9 @@ exports.signUp = handleAsync(async (req, res, next) => {
 exports.getToken = handleAsync( async (req, res, next) => {
     const refreshToken = req.body.token;
 
-    console.log(refreshTokens);
     if (!refreshTokens.includes(refreshToken)) throw new NotAuthenticated('Not Authenticated');
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      console.log('sdasd');
         if (err) throw new NotAuthenticated('Refresh token is expired');
         const accessToken = generateAccessToken({name: user.name});
         res.json({accessToken});
@@ -69,7 +67,7 @@ exports.login = handleAsync(async (req, res, next) => {
     if (matchPassword) {
         const accessToken = generateAccessToken(userInfo);
         const refreshToken = jwt.sign(userInfo, process.env.REFRESH_TOKEN_SECRET, {
-          expiresIn: 120,
+          expiresIn: '20s',
         });
         refreshTokens.push(refreshToken)
 
@@ -84,7 +82,7 @@ exports.login = handleAsync(async (req, res, next) => {
 // helper methods
 generateAccessToken = (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: 10,
+        expiresIn: '10s',
     })
 }
 

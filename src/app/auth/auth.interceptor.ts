@@ -9,61 +9,71 @@ import {catchError, switchMap} from 'rxjs/operators';
 })
 export class AuthInterceptor implements HttpInterceptor {
 
-  currentUser = this.authService.getUserData();
-  accessToken = this.authService.getToken();
-  refreshToken = this.authService.getRefreshToken();
+  userCredentials = this.authService.getUserCredentials();
+
   request;
 
   constructor(private authService: AuthService, private http: HttpClient) {
   }
 
-  // TODO Handle refresh token in auth, change access tokaen expired time
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.currentUser && this.accessToken){
+
+    if (this.userCredentials) {
       return next.handle(this.addToken(request)).pipe(catchError(error => {
 
         if (error.status === 400) {
-            return throwError(error);
+          return throwError(error);
+
         } else if (error.status === 401 && error.error.message === 'Not authenticated') {
+
           return this.getRefreshToken(request, next);
+
         } else if (error.status === 401 && error.error.message === 'Refresh token is expired.') {
+
+          this.authService.logoutUser();
           this.authService.redirectToLoginPage();
+
           return throwError(error);
         } else {
           return throwError(error);
         }
-      }));
+      })
+      );
     } else {
       return next.handle(request).pipe(catchError((error) => {
         this.authService.redirectToLoginPage();
         return throwError(error);
       }));
+
     }
   }
 
   private addToken(request: HttpRequest<any>): HttpRequest<any> {
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${this.accessToken}`
+        Authorization: `Bearer ${this.userCredentials.accessToken}`
       }
     });
   }
 
   private getRefreshToken(request, next): Observable<any> {
     return this.http.post<any>('http://localhost:5000/auth/token', {
-      token: this.refreshToken
+      token: this.userCredentials.refreshToken
     }).pipe(catchError(() => {
-      //to nie działa
-        this.authService.clearAuthSession();
+
+        this.authService.logoutUser();
+
         this.authService.redirectToLoginPage();
 
         return of(false);
       }),
       switchMap((accessToken: any) => {
-        this.authService.saveToken(accessToken.accessToken);
+
+        this.userCredentials.accessToken = accessToken.accessToken;
+        this.authService.setUserCredentials(this.userCredentials);
+
         this.request = request.clone({headers: request.headers.set('Authorization', `Bearer ${accessToken.accessToken}`)});
-        // Return true
-        console.log(this.request);
         return next.handle(this.request);
       })
     );

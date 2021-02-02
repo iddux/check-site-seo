@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,7 +17,9 @@ export class SignUpComponent implements OnInit {
     confirmPassword: {errorType: null, show: false}
   };
 
-  constructor(private router: Router) { }
+  errorMessage = '';
+
+  constructor(private authService: AuthService, private router: Router) { }
 
   // TODO Finish sign up functionality
   // CREATE REMIND PASSWORD
@@ -42,8 +45,14 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  signUp() {
+  signUp(): void {
+    const {username, email, password, confirmPassword} = this.signUpForm.value;
 
+
+    this.authService.signUp(username, email, password, confirmPassword).subscribe(res => {
+      // TODO end signUp
+    }, err => {
+      console.log(err);
+    });
   }
-
 }

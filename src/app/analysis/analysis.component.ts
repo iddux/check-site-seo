@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {LoginModel} from '../auth/models/login.model';
+import {AnalysisService} from './analysis.service';
+import {Analysis} from '../shared/types/analysis.types';
 
 @Component({
   selector: 'app-analysis',
@@ -10,18 +9,17 @@ import {LoginModel} from '../auth/models/login.model';
 })
 export class AnalysisComponent implements OnInit {
 
-  private apiUrl = environment.apiUrl;
+  analysisData: Analysis;
 
-  constructor(private http: HttpClient) { }
+  constructor(private analysisService: AnalysisService) { }
 
   ngOnInit(): void {
-    this.getAnalysis();
-  }
+    this.analysisService.getAnalysis(this.analysisService.analysisUrl).subscribe();
 
-  getAnalysis(): void {
-    // TODO put every request to dedicated service
-    this.http.post<LoginModel>(`${this.apiUrl}/analysis`, {siteUrl: 'https://poscielereczniki.pl/'}).subscribe(res => {
-      console.log(res);
-    }, err => console.log(err));
+    this.analysisService.analysis$.subscribe(analysisData => {
+      this.analysisData = analysisData;
+    }, err => {
+      console.log(err);
+    });
   }
 }
