@@ -67,7 +67,7 @@ exports.login = handleAsync(async (req, res, next) => {
     if (matchPassword) {
         const accessToken = generateAccessToken(userInfo);
         const refreshToken = jwt.sign(userInfo, process.env.REFRESH_TOKEN_SECRET, {
-          expiresIn: '20s',
+          expiresIn: '2m',
         });
         refreshTokens.push(refreshToken)
 
@@ -82,7 +82,7 @@ exports.login = handleAsync(async (req, res, next) => {
 // helper methods
 generateAccessToken = (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '10s',
+        expiresIn: '60d',
     })
 }
 
